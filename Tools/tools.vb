@@ -1,4 +1,17 @@
-Public Sub ClipboardThis(Text As String)
+Public Function clipBoardThis(Optional s As String) As String
+	Dim v: v = s 'Cast to variant for 64-bit VBA support
+	Dim htmlObj As Object
+	Set htmlObj = CreateObject("htmlfile")
+	With htmlObj.parentWindow.clipboardData
+		Select Case True
+			Case Len(s):	.setData "text", v
+			Case Else:	Clipboard = .GetData("text")
+		End Select
+	End With
+	Set htmlObj = Nothing
+End Function
+
+Public Sub depClipboardThis(Text As String)
     Dim MSForms_DataObject As Object
     Set MSForms_DataObject = CreateObject("new:{1C3B4210-F441-11CE-B9EA-00AA006B1A69}")
     MSForms_DataObject.SetText Text
